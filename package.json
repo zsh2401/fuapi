@@ -10,7 +10,8 @@
     "build:es": "tsc -p tsconfig.es.json && tsc-alias -p tsconfig.es.json",
     "build": "pnpm build:es && pnpm build:cjs",
     "prebuild": "pnpm clean",
-    "clean": "rimraf -rf cjs es"
+    "clean": "rimraf -rf cjs es",
+    "prepublish": "pnpm build"
   },
   "keywords": [],
   "author": "zsh2401",
