@@ -25,9 +25,9 @@ export interface FullAPIClientInfo<DTO extends ZodBase, VO extends ZodBase> {
     axios?: Axios
     requestConfig?: AxiosRequestConfig
 }
-export function createAPIClient<DTO extends ZodBase, VO extends ZodBase>(clientInfo: FullAPIClientInfo<DTO, VO>): ApiClient<DTO, VO>
-export function createAPIClient<VO extends ZodBase>(clientInfo: NoArgAPI<VO>): ApiClient<void, VO>
-export function createAPIClient<DTO extends ZodBase,>(clientInfo: NoRetAPI<DTO>): ApiClient<DTO, void>
+export function createAPIClient<DTO extends ZodBase, VO extends ZodBase>(clientInfo: FullAPIClientInfo<DTO, VO>): ApiClient<z.output<DTO>, z.output<VO>>
+export function createAPIClient<VO extends ZodBase>(clientInfo: NoArgClientInfo<VO>): ApiClient<void, z.output<VO>>
+export function createAPIClient<DTO extends ZodBase,>(clientInfo: NoRetClientInfo<DTO>): ApiClient<z.output<DTO>, void>
 export function createAPIClient(clientInfo: NoIOClientInfo): ApiClient<void, void>
 
 export function createAPIClient(clientInfo: any): ApiClient<any, any> {

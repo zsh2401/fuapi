@@ -25,7 +25,7 @@ export interface NoIOApi {
 
 export function defineAPI<DTO extends ZodBase, VO extends ZodBase>(def: FullAPI<DTO, VO>): FullAPI<DTO, VO>
 export function defineAPI<DTO extends ZodBase>(def: NoRetAPI<DTO>): NoRetAPI<DTO>
-export function defineAPI<VO extends ZodBase>(def: NoArgAPI<VO>): NoRetAPI<VO>
+export function defineAPI<VO extends ZodBase>(def: NoArgAPI<VO>): NoArgAPI<VO>
 export function defineAPI(def: NoIOApi): NoIOApi
 export function defineAPI(def: any) {
     return def

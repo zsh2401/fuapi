@@ -16,17 +16,25 @@ export type ExpressAPIHandler<T extends API<any, any>> =
     T extends NoRetAPI<infer VO> ? (dto: ExpressHandlerArgs<T['dtoSchema']>) => Promise<void> :
     T extends NoArgAPI<infer VO> ? () => T['voSchema'] :
     () => Promise<void>
+
+
+type NotAllowed<T, U> = T extends U ? never : T;
+
 /**
  * Implement your api on express instance
  * @param impl 
  */
-export function implAPIOnExpress<DTO extends ZodBase>(express: Express, api: NoRetAPI<DTO>, handler: ExpressAPIHandler<NoRetAPI<z.output<DTO>>>): void
+
+export function implAPIOnExpress<DTO extends ZodBase, VO extends ZodBase>(express: Express, api: FullAPI<DTO, VO>, handler: (dto: ExpressHandlerArgs<z.output<DTO>>) => Promise<z.output<VO>>): void
 
 export function implAPIOnExpress<VO extends ZodBase>(express: Express, api: NoArgAPI<VO>, handler: (dto: ExpressHandlerArgs<void>) => Promise<z.output<VO>>): void
 
-export function implAPIOnExpress(express: Express, api: NoIOApi, handler: (dto: ExpressHandlerArgs<void>) => Promise<void>): void
+export function implAPIOnExpress<DTO extends ZodBase>(express: Express, api: NoRetAPI<DTO>, handler: ExpressAPIHandler<NoRetAPI<z.output<DTO>>>): void
 
-export function implAPIOnExpress<DTO extends ZodBase, VO extends ZodBase>(express: Express, api: FullAPI<DTO, VO>, handler: (dto: ExpressHandlerArgs<z.output<DTO>>) => Promise<z.output<VO>>): void
+
+export function implAPIOnExpress<A extends NoIOApi>(express: Express, api: NotAllowed<A, NoArgAPI<any>>, handler: (dto: ExpressHandlerArgs<void>) => Promise<void>): void
+
+
 
 export function implAPIOnExpress(express: any, api: any, handler: any): void {
     if (api.path.toLowerCase() !== api.path) {
