@@ -1,5 +1,5 @@
 {
-  "name": "eico",
+  "name": "fuckapi",
   "version": "0.0.1",
   "description": "",
   "main": "cjs/index.js",
@@ -15,10 +15,10 @@
   },
   "keywords": [],
   "author": "zsh2401",
-  "homepage": "https://github.com/zsh2401/zapi",
+  "homepage": "https://github.com/zsh2401/eico",
   "repository": {
     "type": "github",
-    "url": "https://github.com/zsh2401/zapi"
+    "url": "https://github.com/zsh2401/eico"
   },
   "license": "MIT",
   "packageManager": "pnpm@10.4.1",
