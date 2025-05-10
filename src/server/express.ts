@@ -1,6 +1,6 @@
 import type { Express, Request } from "express"
 import { z } from "zod"
-import { ZAPI, ZodBase } from "@/def"
+import { API, ZodBase } from "@/def"
 import { ofError, ofSuccess, type Result } from "@/Result"
 
 /**
@@ -17,14 +17,14 @@ export interface HandlerArgs<DTO> {
  */
 export interface ExpressImplementation<DTO extends ZodBase, VO extends ZodBase> {
     express: Express
-    def: ZAPI<DTO, VO>
+    def: API<DTO, VO>
     handler: (dto: HandlerArgs<z.output<DTO>>) => Promise<VO>
 }
 /**
  * Implement your api on express instance
  * @param impl 
  */
-export function implExpress<DTO extends ZodBase, VO extends ZodBase>(impl: ExpressImplementation<DTO, VO>): void {
+export function implAPIOnExpress<DTO extends ZodBase, VO extends ZodBase>(impl: ExpressImplementation<DTO, VO>): void {
     if (impl.def.path.toLowerCase() !== impl.def.path) {
         throw new Error("API path must be all lowercase")
     }

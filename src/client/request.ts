@@ -1,14 +1,14 @@
-import type { ZAPI, ZodBase } from "@/def";
+import type { API, ZodBase } from "@/def";
 import { z } from "zod"
 import _axios, { Axios, AxiosRequestConfig } from "axios"
 import type { Result } from "@/Result";
 export interface RequestInfo<DTO extends ZodBase, VO extends ZodBase> {
-    api: ZAPI<DTO, VO>
+    api: API<DTO, VO>
     data: z.output<DTO>
     axios?: Axios
     requestConfig?: AxiosRequestConfig
 }
-export async function requestAPI<DTO extends ZodBase, VO extends ZodBase>(
+export async function callAPI<DTO extends ZodBase, VO extends ZodBase>(
     req: RequestInfo<DTO, VO>): Promise<z.output<VO>> {
     const axios = req.axios ?? _axios
     const requestConfig = req.requestConfig ?? {}
