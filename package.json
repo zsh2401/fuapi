@@ -1,0 +1,41 @@
+{
+  "name": "zapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "cjs/index.js",
+  "module": "es/index.js",
+  "types": "cjs/index.d.ts",
+  "scripts": {
+    "build:cjs": "tsc && tsc-alias",
+    "build:es": "tsc -p tsconfig.es.json && tsc-alias -p tsconfig.es.json",
+    "build": "pnpm build:es && pnpm build:cjs",
+    "prebuild": "pnpm clean",
+    "clean": "rimraf -rf cjs es"
+  },
+  "keywords": [],
+  "author": "zsh2401",
+  "homepage": "https://github.com/zsh2401/zapi",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/zsh2401/zapi"
+  },
+  "license": "MIT",
+  "packageManager": "pnpm@10.4.1",
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "express": "^5.1.0",
+    "tsc-alias": "^1.8.16",
+    "typescript": "^5.8.3",
+    "vite-plugin-dts": "^4.5.3"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "peerDependencies": {
+    "express": "^5.1.0"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "zod": "^3.24.4"
+  }
+}
