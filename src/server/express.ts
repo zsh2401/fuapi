@@ -1,6 +1,6 @@
 import type { Express, Request } from "express"
 import { z } from "zod"
-import { CommonAPIDefinition, ZodBase } from "@/def"
+import { ZAPI, ZodBase } from "@/def"
 import { ofError, ofSuccess, type Result } from "@/Result"
 
 /**
@@ -17,7 +17,7 @@ export interface HandlerArgs<DTO> {
  */
 export interface ExpressImplementation<DTO extends ZodBase, VO extends ZodBase> {
     express: Express
-    def: CommonAPIDefinition<DTO, VO>
+    def: ZAPI<DTO, VO>
     handler: (dto: HandlerArgs<z.output<DTO>>) => Promise<VO>
 }
 /**

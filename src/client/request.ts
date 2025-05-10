@@ -1,18 +1,18 @@
-import type { CommonAPIDefinition, ZodBase } from "@/def";
+import type { ZAPI, ZodBase } from "@/def";
 import { z } from "zod"
 import _axios, { Axios, AxiosRequestConfig } from "axios"
 import type { Result } from "@/Result";
-export interface RequestAPIInfo<DTO extends ZodBase, VO extends ZodBase> {
-    target: CommonAPIDefinition<DTO, VO>
+export interface RequestInfo<DTO extends ZodBase, VO extends ZodBase> {
+    api: ZAPI<DTO, VO>
     data: z.output<DTO>
     axios?: Axios
     requestConfig?: AxiosRequestConfig
 }
 export async function requestAPI<DTO extends ZodBase, VO extends ZodBase>(
-    req: RequestAPIInfo<DTO, VO>): Promise<z.output<VO>> {
+    req: RequestInfo<DTO, VO>): Promise<z.output<VO>> {
     const axios = req.axios ?? _axios
     const requestConfig = req.requestConfig ?? {}
-    requestConfig.url = req.target.path
+    requestConfig.url = req.api.path
     requestConfig.method = "post"
     requestConfig.headers ??= {}
     requestConfig.headers["Content-Type"] = "application/json"
