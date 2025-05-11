@@ -11,7 +11,9 @@
     "build": "pnpm build:es && pnpm build:cjs",
     "prebuild": "pnpm clean",
     "clean": "rimraf -rf cjs es",
-    "prepublish": "pnpm build"
+    "style": "pnpm prettier --check . && pnpm eslint .",
+    "fix": "pnpm prettier --write . && pnpm eslint . --fix",
+    "prepublish": "pnpm style && pnpm build"
   },
   "keywords": [],
   "author": "zsh2401",
@@ -23,10 +25,17 @@
   "license": "MIT",
   "packageManager": "pnpm@10.4.1",
   "devDependencies": {
+    "@eslint/js": "^9.26.0",
     "@types/express": "^5.0.1",
+    "eslint": "^9.26.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-no-floating-promise": "^2.0.0",
+    "eslint-plugin-prettier": "^5.4.0",
     "express": "^5.1.0",
+    "prettier": "3.5.3",
     "tsc-alias": "^1.8.16",
     "typescript": "^5.8.3",
+    "typescript-eslint": "^8.32.0",
     "vite-plugin-dts": "^4.5.3"
   },
   "engines": {

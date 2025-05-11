@@ -1,61 +1,61 @@
-import { z } from "zod";
-import { defineAPI, NoArgAPI } from "./def";
-import { implAPIOnExpress } from "./server";
-import { createAPIClient } from "./client";
-
+import { z } from 'zod'
+import { defineAPI, NoArgAPI } from './def'
+import { implAPIOnExpress } from './server'
+import { createAPIClient } from './client'
 
 async function plain() {
-    const api = defineAPI({
-        path: "a",
-    })
-    implAPIOnExpress(null!, api, async (req) => {
-
-    })
-    const client = createAPIClient({
-        api: api
-    })
-    const result: void = await client()
+  const api = defineAPI({
+    path: 'a',
+  })
+  implAPIOnExpress(null!, api, async (req) => {})
+  const client = createAPIClient({
+    api: api,
+  })
+  const result: void = await client()
 }
 async function noArg() {
-    const api = defineAPI({
-        path: "a",
-        voSchema: z.object({ a: z.string() })
-    })
+  const api = defineAPI({
+    path: 'a',
+    voSchema: z.object({ a: z.string() }),
+  })
 
-    implAPIOnExpress(null!, api, async (req) => {
-        return { a: "string" }
-    })
-    const client = createAPIClient({
-        api: api
-    })
-    const result: { a: string } = await client()
+  implAPIOnExpress(null!, api, async (req) => {
+    return { a: 'string' }
+  })
+  const client = createAPIClient({
+    api: api,
+  })
+  const result: { a: string } = await client()
 }
 async function noRet() {
-    const api = defineAPI({
-        path: "a",
-        dtoSchema: z.object({ a: z.string() })
-    })
-    implAPIOnExpress(null!, api, async (req) => {
-        const a: string = req.dto.a
-    })
-    const client = createAPIClient({
-        api: api
-    })
-    const result: void = await client({ a: "a" })
+  const api = defineAPI({
+    path: 'a',
+    dtoSchema: z.object({ a: z.string() }),
+  })
+  implAPIOnExpress(null!, api, async (req) => {
+    const a: string = req.dto.a
+    console.log(a)
+  })
+  const client = createAPIClient({
+    api: api,
+  })
+  const result: void = await client({ a: 'a' })
 }
 
 async function full() {
-    const api = defineAPI({
-        path: "a",
-        dtoSchema: z.object({ a: z.string() }),
-        voSchema: z.object({ a: z.string() })
-    })
-    
-    implAPIOnExpress(null!, api, async (req) => {
-        return req.dto
-    })
-    const client = createAPIClient({
-        api: api
-    })
-    const result: { a: string } = await client({ a: "test" })
+  const api = defineAPI({
+    path: 'a',
+    dtoSchema: z.object({ a: z.string() }),
+    voSchema: z.object({ a: z.string() }),
+  })
+
+  implAPIOnExpress(null!, api, async (req) => {
+    return req.dto
+  })
+  const client = createAPIClient({
+    api: api,
+  })
+  const result: { a: string } = await client({
+    a: 'test',
+  })
 }
