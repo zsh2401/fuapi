@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import type { Express, Request } from 'express'
+import type { Express, Request, Response } from 'express'
 import { z } from 'zod'
 import type {
-    API,
     StdAPI,
     RetAPI,
     PlainAPI,
@@ -15,14 +14,14 @@ import { ofError, ofSuccess, type Result } from '@/Result'
  * The args of express handler implementation
  */
 export interface HandlerArgs<DTO extends ZodBase | void> {
-    request: Express.Request
-    response: Express.Response
+    request: Request
+    response: Response
     dto: DTO extends ZodBase ? z.output<DTO> : void
 }
 export type HandlerResult<VO extends ZodBase | void> =
     VO extends ZodBase
-        ? Promise<z.output<VO>>
-        : Promise<void>
+    ? Promise<z.output<VO>>
+    : Promise<void>
 
 export interface Handler<
     DTO extends ZodBase | void,

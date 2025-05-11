@@ -1,6 +1,6 @@
 {
     "name": "fuapi",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "description": "Fusion API between back-end and front-end",
     "main": "cjs/index.js",
     "module": "es/index.js",
