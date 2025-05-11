@@ -20,8 +20,8 @@ export interface HandlerArgs<DTO extends ZodBase | void> {
 }
 export type HandlerResult<VO extends ZodBase | void> =
     VO extends ZodBase
-    ? Promise<z.output<VO>>
-    : Promise<void>
+        ? Promise<z.output<VO>>
+        : Promise<void>
 
 export interface Handler<
     DTO extends ZodBase | void,
