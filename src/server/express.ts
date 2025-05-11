@@ -1,6 +1,6 @@
 import type { Express, Request } from "express"
 import { z } from "zod"
-import { API, FullAPI, NoArgAPI, NoIOApi, NoRetAPI, ZodBase } from "@/def"
+import type { API, FullAPI, NoArgAPI, NoIOApi, NoRetAPI, ZodBase } from "@/def"
 import { ofError, ofSuccess, type Result } from "@/Result"
 
 /**
@@ -22,16 +22,21 @@ type NotAllowed<T, U> = T extends U ? never : T;
 
 /**
  * Implement your api on express instance
- * @param impl 
  */
-
 export function implAPIOnExpress<DTO extends ZodBase, VO extends ZodBase>(express: Express, api: FullAPI<DTO, VO>, handler: (dto: ExpressHandlerArgs<z.output<DTO>>) => Promise<z.output<VO>>): void
 
+/**
+ * Implement your no argument api on express instance
+ */
 export function implAPIOnExpress<VO extends ZodBase>(express: Express, api: NoArgAPI<VO>, handler: (dto: ExpressHandlerArgs<void>) => Promise<z.output<VO>>): void
-
+/**
+ * Implement your no returning api on express instance
+ */
 export function implAPIOnExpress<DTO extends ZodBase>(express: Express, api: NoRetAPI<DTO>, handler: ExpressAPIHandler<NoRetAPI<z.output<DTO>>>): void
 
-
+/**
+ * Implement your no argument and returning api on express instance
+ */
 export function implAPIOnExpress<A extends NoIOApi>(express: Express, api: NotAllowed<A, NoArgAPI<any>>, handler: (dto: ExpressHandlerArgs<void>) => Promise<void>): void
 
 
