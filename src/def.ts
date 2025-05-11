@@ -21,6 +21,7 @@ export interface ArgAPI<DTO extends ZodBase> {
     dtoSchema: DTO
     voSchema?: void
 }
+
 export interface RetAPI<VO extends ZodBase> {
     path: string
     dtoSchema?: void
@@ -43,6 +44,7 @@ export function defineAPI<VO extends ZodBase>(
     def: RetAPI<VO>
 ): RetAPI<VO>
 export function defineAPI(def: PlainAPI): PlainAPI
-export function defineAPI(def: any) {
+
+export function defineAPI(def: any): any {
     return def
 }

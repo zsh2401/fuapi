@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import type { Express, Request } from 'express'
 import { z } from 'zod'
 import type {
@@ -122,6 +123,7 @@ export function implApi(...args: any[]) {
         _implApi(express, api, handler)
     }
 }
+//
 function _implApi(
     express: Express,
     api: any,

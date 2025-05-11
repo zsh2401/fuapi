@@ -16,6 +16,11 @@ import {
 export interface ApiClient<DTO, VO> {
     (data: DTO): Promise<VO>
 }
+type AllClient =
+    | NoArgClientInfo<any>
+    | NoRetClientInfo<any>
+    | NoIOClientInfo
+    | FullAPIClientInfo<any, any>
 export interface ClientInfoBase {
     axios?: Axios
     requestConfig?: AxiosRequestConfig
@@ -38,6 +43,7 @@ export interface FullAPIClientInfo<
 > extends ClientInfoBase {
     api: StdAPI<DTO, VO>
 }
+
 export function clientOfAPI<
     DTO extends ZodBase,
     VO extends ZodBase,
@@ -55,14 +61,14 @@ export function clientOfAPI(
 ): ApiClient<void, void>
 
 export function clientOfAPI(
-    clientInfo: ClientInfoBase
+    clientInfo: AllClient
 ): ApiClient<any, any> {
-    return async (data: any) => {
+    return async (data: any): Promise<any> => {
         try {
-            return callAPI({
+            return await callAPI({
                 requestConfig: clientInfo.requestConfig,
                 axios: clientInfo.axios,
-                api: (clientInfo as any).api,
+                api: clientInfo.api,
                 data,
             })
         } catch (err: unknown) {

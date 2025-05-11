@@ -31,6 +31,7 @@
         "eslint-config-prettier": "^10.1.5",
         "eslint-plugin-no-floating-promise": "^2.0.0",
         "eslint-plugin-prettier": "^5.4.0",
+        "eslint-plugin-promise": "^7.2.1",
         "express": "^5.1.0",
         "prettier": "3.5.3",
         "tsc-alias": "^1.8.16",

@@ -16,6 +16,7 @@ export interface RequestInfoWithArg<DTO extends ZodBase> {
 }
 export interface RequestInfoNoArg {
     api: RetAPI<any> | PlainAPI
+    data: void
     axios?: Axios
     requestConfig?: AxiosRequestConfig
 }
@@ -23,11 +24,14 @@ export async function callAPI<
     DTO extends ZodBase,
     VO extends ZodBase,
 >(req: RequestInfoWithArg<DTO>): Promise<z.output<VO>>
+
 export async function callAPI<VO extends ZodBase>(
     req: RequestInfoNoArg
 ): Promise<z.output<VO>>
 
-export async function callAPI(req: any): Promise<any> {
+export async function callAPI(
+    req: RequestInfoWithArg<any> | RequestInfoNoArg
+): Promise<any> {
     const axios = req.axios ?? _axios
     const requestConfig = req.requestConfig ?? {}
     requestConfig.url = req.api.path
@@ -35,7 +39,7 @@ export async function callAPI(req: any): Promise<any> {
     requestConfig.headers ??= {}
     requestConfig.headers['Content-Type'] =
         'application/json'
-    if (req.api.dtoSchema) {
+    if (typeof req.api.dtoSchema === 'object') {
         await (req.api.dtoSchema as ZodBase).parseAsync(
             req.data
         )
