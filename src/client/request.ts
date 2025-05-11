@@ -1,21 +1,21 @@
 import type {
-  FullAPI,
-  NoArgAPI,
-  NoIOApi,
-  NoRetAPI,
+  StdAPI,
+  RetAPI,
+  PlainAPI,
+  ArgAPI,
   ZodBase,
 } from '@/def'
 import { z } from 'zod'
 import _axios, { Axios, AxiosRequestConfig } from 'axios'
 import type { Result } from '@/Result'
 export interface RequestInfoWithArg<DTO extends ZodBase> {
-  api: FullAPI<DTO, any> | NoRetAPI<DTO>
+  api: StdAPI<DTO, any> | ArgAPI<DTO>
   data: z.output<DTO>
   axios?: Axios
   requestConfig?: AxiosRequestConfig
 }
 export interface RequestInfoNoArg {
-  api: NoArgAPI<any> | NoIOApi
+  api: RetAPI<any> | PlainAPI
   axios?: Axios
   requestConfig?: AxiosRequestConfig
 }

@@ -1,10 +1,10 @@
 import {
   API,
-  NoArgAPI,
-  NoIOApi as PlainAPI,
-  NoRetAPI,
+  RetAPI,
+  PlainAPI as PlainAPI,
+  ArgAPI,
   ZodBase,
-  FullAPI,
+  StdAPI,
 } from '@/def'
 import type { Axios, AxiosRequestConfig } from 'axios'
 import { z } from 'zod'
@@ -17,12 +17,12 @@ export interface ApiClient<DTO, VO> {
   (data: DTO): Promise<VO>
 }
 export interface NoArgClientInfo<VO extends ZodBase> {
-  api: NoArgAPI<VO>
+  api: RetAPI<VO>
   axios?: Axios
   requestConfig?: AxiosRequestConfig
 }
 export interface NoRetClientInfo<DTO extends ZodBase> {
-  api: NoRetAPI<DTO>
+  api: ArgAPI<DTO>
   axios?: Axios
   requestConfig?: AxiosRequestConfig
 }
@@ -35,7 +35,7 @@ export interface FullAPIClientInfo<
   DTO extends ZodBase,
   VO extends ZodBase,
 > {
-  api: FullAPI<DTO, VO>
+  api: StdAPI<DTO, VO>
   axios?: Axios
   requestConfig?: AxiosRequestConfig
 }
