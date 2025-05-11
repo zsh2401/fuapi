@@ -6,3 +6,5 @@ export * from 'zod'
 export * from './InvalidDTOError'
 export * from './InvalidVOError'
 export * from './APIError'
+
+export * from './types'
