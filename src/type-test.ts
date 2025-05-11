@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { defineAPI, RetAPI } from './def'
 import { implApi } from './server'
-import { createAPIClient } from './client'
+import { clientOfAPI } from './client'
 
 async function plain() {
   const api = defineAPI({
@@ -12,7 +12,7 @@ async function plain() {
     api,
     handler: async (req) => {},
   })
-  const client = createAPIClient({
+  const client = clientOfAPI({
     api: api,
   })
   const result: void = await client()
@@ -31,7 +31,7 @@ async function noArg() {
     },
   })
 
-  const client = createAPIClient({
+  const client = clientOfAPI({
     api: api,
   })
   const result: { a: string } = await client()
@@ -50,7 +50,7 @@ async function noRet() {
       // return { a: 3 }
     },
   })
-  const client = createAPIClient({
+  const client = clientOfAPI({
     api: api,
   })
   const result: void = await client({ a: 'a' })
@@ -66,7 +66,7 @@ async function full() {
   implApi(null!, api, async (req) => {
     return req.dto
   })
-  const client = createAPIClient({
+  const client = clientOfAPI({
     api: api,
   })
   const result: { a: string } = await client({
