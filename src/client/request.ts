@@ -65,8 +65,14 @@ export async function callAPI(
     const result: Result<z.output<any>> = resp.data
     // console.log(resp.data)
     if (typeof result.success !== 'boolean') {
-        console.warn("Invalid response data format", resp.data)
-        throw new APIError(500, 'Invalid response data format')
+        console.warn(
+            'Invalid response data format',
+            resp.data
+        )
+        throw new APIError(
+            500,
+            'Invalid response data format'
+        )
     }
 
     if (result.success) {
