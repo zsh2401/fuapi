@@ -65,7 +65,9 @@ export async function callAPI(
         throw new APIError(resp.status, 'Unknown error')
     }
 
-    const result: Result<z.output<any>> = JSON.parse(resp.data as string)
+    const result: Result<z.output<any>> = JSON.parse(
+        resp.data as string
+    )
     console.log('Direct response data', result)
     // console.log(resp.data)
     if (typeof result.success !== 'boolean') {
