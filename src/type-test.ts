@@ -4,72 +4,72 @@ import { implApi } from './server'
 import { clientOfAPI } from './client'
 
 async function plain() {
-  const api = defineAPI({
-    path: 'a',
-  })
-  implApi({
-    express: null!,
-    api,
-    handler: async (req) => {},
-  })
-  const client = clientOfAPI({
-    api: api,
-  })
-  const result: void = await client()
+    const api = defineAPI({
+        path: 'a',
+    })
+    implApi({
+        express: null!,
+        api,
+        handler: async (req) => { },
+    })
+    const client = clientOfAPI({
+        api: api,
+    })
+    const result: void = await client()
 }
 async function noArg() {
-  const api = defineAPI({
-    path: 'a',
-    voSchema: z.object({ a: z.string() }),
-  })
+    const api = defineAPI({
+        path: 'a',
+        voSchema: z.object({ a: z.string() }),
+    })
 
-  implApi({
-    express: null!,
-    api,
-    handler: async (req) => {
-      return { a: 'string' }
-    },
-  })
+    implApi({
+        express: null!,
+        api,
+        handler: async (req) => {
+            return { a: 'string' }
+        },
+    })
 
-  const client = clientOfAPI({
-    api: api,
-  })
-  const result: { a: string } = await client()
+    const client = clientOfAPI({
+        api: api,
+    })
+    const result: { a: string } = await client()
 }
 async function noRet() {
-  const api = defineAPI({
-    path: 'a',
-    dtoSchema: z.object({ a: z.string() }),
-  })
-  implApi({
-    express: null!,
-    api,
-    handler: async (req) => {
-      const a: string = req.dto.a
-      console.log(a)
-      // return { a: 3 }
-    },
-  })
-  const client = clientOfAPI({
-    api: api,
-  })
-  const result: void = await client({ a: 'a' })
+    const api = defineAPI({
+        path: 'a',
+        dtoSchema: z.object({ a: z.string() }),
+    })
+    implApi({
+        express: null!,
+        api,
+        handler: async (req) => {
+            const a: string = req.dto.a
+            console.log(a)
+            // return { a: 3 }
+        },
+    })
+    const client = clientOfAPI({
+        api: api,
+    })
+    const result: void = await client({ a: 'a' })
 }
 
 async function full() {
-  const api = defineAPI({
-    path: 'a',
-    dtoSchema: z.object({ a: z.string() }),
-    voSchema: z.object({ a: z.string() }),
-  })
+    const api = defineAPI({
+        path: 'a',
+        dtoSchema: z.object({ a: z.string() }),
+        voSchema: z.object({ a: z.string() }),
+    })
 
-  implApi(null!, api, async (req) => {
-    return req.dto
-  })
-  const client = clientOfAPI({
-    api: api,
-  })
-  const result: { a: string } = await client({
-    a: 'test',
-  })
+    implApi(null!, api, async (req) => {
+        return req.dto
+    })
+    const client = clientOfAPI({
+        api,
+    })
+    const result: { a: string } = await client({
+        a: 'test',
+    })
 }

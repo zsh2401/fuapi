@@ -19,7 +19,7 @@ export interface ApiClient<DTO, VO> {
 export interface ClientInfoBase {
     axios?: Axios
     requestConfig?: AxiosRequestConfig
-    onError: (err: unknown) => Promise<void>
+    onError?: (err: unknown) => Promise<void>
 }
 export interface NoArgClientInfo<VO extends ZodBase> extends ClientInfoBase {
     api: RetAPI<VO>
