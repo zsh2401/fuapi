@@ -3,3 +3,6 @@ export * from './server'
 export * from './client'
 export * from './Result'
 export * from 'zod'
+export * from "./InvalidDTOError"
+export * from "./InvalidVOError"
+export * from "./APIError"

@@ -5,9 +5,12 @@ import type {
     ArgAPI,
     ZodBase,
 } from '@/def'
-import { z } from 'zod'
+import { z, ZodError } from 'zod'
 import _axios, { Axios, AxiosRequestConfig } from 'axios'
 import type { Result } from '@/Result'
+import { InvalidDTOError } from '@/InvalidDTOError'
+import { InvalidVOError } from '@/InvalidVOError'
+import { APIError } from '@/APIError'
 export interface RequestInfoWithArg<DTO extends ZodBase> {
     api: StdAPI<DTO, any> | ArgAPI<DTO>
     data: z.output<DTO>
@@ -40,28 +43,50 @@ export async function callAPI(
     requestConfig.headers['Content-Type'] =
         'application/json'
     if (typeof req.api.dtoSchema === 'object') {
-        await (req.api.dtoSchema as ZodBase).parseAsync(
-            req.data
-        )
+        try {
+            await (req.api.dtoSchema as ZodBase).parseAsync(
+                req.data
+            )
+        } catch (err: unknown) {
+            if (err instanceof ZodError) {
+                throw new InvalidDTOError(err)
+            } else {
+                throw new InvalidDTOError()
+            }
+        }
     }
     requestConfig.data = JSON.stringify(req.data ?? {})
     const resp = await axios.request(requestConfig)
+
     if (resp.status !== 200) {
-        throw new Error('Status code is not 200')
+        throw new APIError(resp.status, "Unknown error")
     }
+
     const result: Result<z.output<any>> = resp.data
     if (typeof result.success !== 'boolean') {
-        throw new Error('Invalid response')
+        throw new APIError(500, 'Invalid response')
     }
+
     if (result.success) {
         if (req.api.voSchema) {
-            await req.api.voSchema.parseAsync(result.data)
+            try {
+                await (req.api.voSchema as ZodBase).parseAsync(
+                    req.data
+                )
+            } catch (err: unknown) {
+                if (err instanceof ZodError) {
+                    throw new InvalidVOError(err)
+                } else {
+                    throw new InvalidVOError()
+                }
+            }
         }
+
         return result.data
     } else {
         console.warn(
             `Invalid response code=${result.code},msg=${result.msg}`
         )
-        throw new Error(result.msg ?? 'Unknown error')
+        throw new APIError(result.code, result.msg ?? 'Unknown error')
     }
 }
