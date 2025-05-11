@@ -59,7 +59,7 @@ export async function callAPI(
     const resp = await axios.request(requestConfig)
 
     if (resp.status !== 200) {
-        throw new APIError(resp.status, "Unknown error")
+        throw new APIError(resp.status, 'Unknown error')
     }
 
     const result: Result<z.output<any>> = resp.data
@@ -70,9 +70,9 @@ export async function callAPI(
     if (result.success) {
         if (req.api.voSchema) {
             try {
-                await (req.api.voSchema as ZodBase).parseAsync(
-                    req.data
-                )
+                await (
+                    req.api.voSchema as ZodBase
+                ).parseAsync(req.data)
             } catch (err: unknown) {
                 if (err instanceof ZodError) {
                     throw new InvalidVOError(err)
@@ -87,6 +87,9 @@ export async function callAPI(
         console.warn(
             `Invalid response code=${result.code},msg=${result.msg}`
         )
-        throw new APIError(result.code, result.msg ?? 'Unknown error')
+        throw new APIError(
+            result.code,
+            result.msg ?? 'Unknown error'
+        )
     }
 }
