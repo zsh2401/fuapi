@@ -1,5 +1,8 @@
 name: Test packages
 
+on:
+    push:
+        branches: '**'
 jobs:
     publish:
         runs-on: ubuntu-latest
