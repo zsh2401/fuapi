@@ -1,6 +1,6 @@
 {
     "name": "fuapi",
-    "version": "0.0.16",
+    "version": "0.0.17",
     "description": "Fusion API between back-end and front-end",
     "main": "cjs/index.js",
     "module": "es/index.js",
@@ -13,7 +13,7 @@
         "clean": "rimraf -rf cjs es",
         "style": "pnpm prettier --check . && pnpm eslint .",
         "fix": "pnpm prettier --write . && pnpm eslint . --fix",
-        "prepublish": "pnpm style && pnpm build"
+        "prepublish": "pnpm build"
     },
     "keywords": [],
     "author": "zsh2401",

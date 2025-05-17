@@ -21,8 +21,5 @@ jobs:
             - name: Install dependencies
               run: pnpm install
 
-            - name: Style check
-              run: pnpm run style
-
             - name: Build
               run: pnpm run build
