@@ -82,8 +82,14 @@ export async function callAPI(
             try {
                 await (
                     req.api.voSchema as ZodBase
-                ).parseAsync(req.data)
+                ).parseAsync(result.data)
             } catch (err: unknown) {
+                console.error(
+                    'Server result is not valid',
+                    req.api.voSchema,
+                    result.data,
+                    err
+                )
                 if (err instanceof ZodError) {
                     throw new InvalidVOError(err)
                 } else {
