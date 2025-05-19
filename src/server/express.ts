@@ -20,8 +20,8 @@ export interface HandlerArgs<DTO extends ZodBase | void> {
 }
 export type HandlerResult<VO extends ZodBase | void> =
     VO extends ZodBase
-        ? Promise<z.output<VO>>
-        : Promise<void>
+    ? Promise<z.output<VO>>
+    : Promise<void>
 
 export interface Handler<
     DTO extends ZodBase | void,
@@ -29,6 +29,8 @@ export interface Handler<
 > {
     (args: HandlerArgs<DTO>): HandlerResult<VO>
 }
+
+
 
 /**
  * Implement your <b>standard api</b> on express instance
@@ -42,7 +44,8 @@ export function implApi<
 >(
     express: Express,
     api: StdAPI<DTO, VO>,
-    handler: Handler<DTO, VO>
+    handler: Handler<DTO, VO>,
+    onError?: (err: Error) => void
 ): void
 /**
  * Implement your <b>standard api</b> on express instance
@@ -55,7 +58,10 @@ export function implApi<
     express: Express
     api: StdAPI<DTO, VO>
     handler: Handler<DTO, VO>
+    onError?: (err: Error) => void
 }): void
+
+
 
 /**
  * Implement your <b>return value api</b> on express instance
@@ -66,7 +72,8 @@ export function implApi<
 export function implApi<VO extends ZodBase>(
     express: Express,
     api: RetAPI<VO>,
-    handler: Handler<void, VO>
+    handler: Handler<void, VO>,
+    onError?: (err: Error) => void
 ): void
 /**
  * Implement your <b>return value api</b> on express instance
@@ -75,8 +82,12 @@ export function implApi<VO extends ZodBase>(
 export function implApi<VO extends ZodBase>(args: {
     express: Express
     api: RetAPI<VO>
-    handler: Handler<void, VO>
+    handler: Handler<void, VO>,
+    onError?: (err: Error) => void
 }): void
+
+
+
 
 /**
  * Implement your <b>receive arg api</b> on express instance
@@ -84,7 +95,8 @@ export function implApi<VO extends ZodBase>(args: {
 export function implApi<DTO extends ZodBase>(
     express: Express,
     api: ArgAPI<DTO>,
-    handler: Handler<DTO, void>
+    handler: Handler<DTO, void>,
+    onError?: (err: Error) => void
 ): void
 /**
  * Implement your <b>receive arg api</b> on express instance
@@ -93,8 +105,12 @@ export function implApi<DTO extends ZodBase>(
 export function implApi<DTO extends ZodBase>(args: {
     express: Express
     api: ArgAPI<DTO>
-    handler: Handler<DTO, void>
+    handler: Handler<DTO, void>,
+    onError?: (err: Error) => void
 }): void
+
+
+
 
 /**
  * Implement your <b>plain api</b> on express instance
@@ -102,7 +118,8 @@ export function implApi<DTO extends ZodBase>(args: {
 export function implApi(
     express: Express,
     api: PlainAPI,
-    handler: Handler<void, void>
+    handler: Handler<void, void>,
+    onError?: (err: Error) => void
 ): void
 /**
  * Implement your <b>plain api</b> on express instance
@@ -110,23 +127,25 @@ export function implApi(
 export function implApi(args: {
     express: Express
     api: PlainAPI
-    handler: Handler<void, void>
+    handler: Handler<void, void>,
+    onError?: (err: Error) => void
 }): void
 
 export function implApi(...args: any[]) {
-    if (args.length === 3) {
-        const [express, api, handler] = args
-        _implApi(express, api, handler)
+    if (args.length >= 3) {
+        const [express, api, handler, onError] = args
+        _implApi(express, api, handler, onError ?? (() => { }))
     } else {
-        const { express, api, handler } = args[0]
-        _implApi(express, api, handler)
+        const { express, api, handler, onError } = args[0]
+        _implApi(express, api, handler, onError ?? (() => { }))
     }
 }
 //
 function _implApi(
     express: Express,
     api: any,
-    handler: any
+    handler: any,
+    onError: (err: Error) => void
 ): void {
     if (api.path.toLowerCase() !== api.path) {
         throw new Error('API path must be all lowercase')
@@ -157,6 +176,13 @@ function _implApi(
             }
             result = ofSuccess(await handler(args))
         } catch (err: unknown) {
+
+            if (err instanceof Error) {
+                onError(err)
+            } else {
+                onError(new Error(`Unknown error ${err as any}`))
+            }
+
             result = ofError(err)
         }
         const str = JSON.stringify(result)
